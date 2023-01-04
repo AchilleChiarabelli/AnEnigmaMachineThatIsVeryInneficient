@@ -3,7 +3,7 @@ import os
 # https://www.w3schools.com/python/python_file_handling.asp
 
 shift = 0
-alphabet = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz 1234567890.!?&\\@#$%^*(){}[]-_=+;:<>,/?~|"
+alphabet = "abcdefghijklmnopqrstuvwxyz ".upper()
 final = ""
 choice = 0
 # VARIABLES
@@ -11,51 +11,35 @@ choice = 0
 def enigma(shift, length, script) :
 	message = ""
 	for i in range(length):
-		char = script[i]
-		if char in alphabet:
-			temp = alphabet.rfind(char) - shift
-			message += alphabet[temp]
-		else:
-			message += "□"
+		char = script[i].upper()
+		temp = alphabet.rfind(char) - shift
+		message += alphabet[temp]
 	return message
 #the en operation
 
 def denigma(shift, length, script):
 	message = ""
 	for i in range(length):
-		char = script[i]
+		char = script[i].upper()
 		temp = alphabet.rfind(char) + shift
-		while temp >= 93:
-			temp -= 93
+		while temp >= 26:
+			temp -= 27
 		message += alphabet[temp]
 	return message
 #the de operation
 
-def load():
-	for i in range (4):
-		os.system("clear")
-		print("loading |.|")
-		time.sleep(0.2)
-		os.system("clear")
-		print("loading |...|")
-		time.sleep(0.2)
-		os.system("clear")
-		print("loading |.....|")
-		time.sleep(0.2)
-	
-
 def the_full_product(shift, length , script, choice, name):
 	
 	#makes it less than 26
-	while shift >= 91:
-		shift -= 91
+	while shift >= 26:
+		shift -= 27
 	if int(choice) == 1:
 		make_file(shift, length, script, name)
-		load()
+		print("enigmaing")
+		time.sleep(2.5)
 		os.system("clear")
 		print("")
 		print("")
-		time.sleep(0.1)
 		print("File made.")
 		#doing the actual operation
 		
@@ -63,11 +47,11 @@ def the_full_product(shift, length , script, choice, name):
 		something = get_message(shift, name)
 		if os.path.exists(name):
 			os.remove(name)
-		load()
+		print("denigmaing")
+		time.sleep(2.5)
 		os.system("clear")
 		print("")
 		print("")
-		time.sleep(0.1)
 		print("This is the uncensored text: " + something)
 		#doing the actual operation
 		
@@ -89,22 +73,17 @@ def get_message(shift, file_name):
 
 # MAIN
 
+#getting all inputs for the text, shift, length, and enigma/denigma
+
 print("")
 print("")
 length = 0
-
+choice = input("Would you like to enigma (1) or denigma (2) a text? ")
+#getting de or en
 while True:
-	choice = input("Would you like to enigma (1) or denigma (2) a text? ")
-	if choice != "1" and choice != "2":
-		print("Thats not a valid input, try again. ")
-	else:
-		break
-
-#getting de or en/checking if valid
-
-while True:
+	shift = int(input("What would you like to make the key? (insert a number 1 - infinity) "))
 	try:
-		shift = int(input("What would you like to make the key? (insert a number 1 - infinity) "))
+		shift = int(shift)
 		break
 	except:
 		print("That isn't an integer!!! ")
@@ -125,14 +104,15 @@ if int(choice) == 2:
 #denigma info
 	
 else:
-	script = input("What would you like enigma??? ")
+	script = input("What would you like enigma??? ").upper()
 	length = len(script)
 	while True:
-		name = input("What would you like to name the message???").upper()
+		name = input("What would you like to name the message???")
 		if os.path.exists(name):
 				print("That alread exists!!!")
 		else:
 			break
 	#checking if the file exists
+			
 	the_full_product(shift, length, script, choice, name)
 #enigma info
